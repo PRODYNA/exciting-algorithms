@@ -2,6 +2,4 @@ module excitingalgorithm
 
 go 1.16
 
-require (
-	github.com/stretchr/testify v1.5.1 // indirect
-)
+require github.com/stretchr/testify v1.5.1
