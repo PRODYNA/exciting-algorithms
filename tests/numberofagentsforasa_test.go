@@ -7,9 +7,10 @@ import (
 )
 
 func TestNumberOfAgentsForAsa(t *testing.T) {
-
+	numberOfAgentsForAsa, err := erlang.NumberOfAgentsForAsa(200, 180, 60, 120)
 	// NumberOfAgentsForAsa
-	assert.Equal(t, erlang.NumberOfAgentsForAsa(200, 180, 60, 120), 12, "NumberOfAgentsForAsa are equal")
-	assert.NotEqual(t, erlang.NumberOfAgentsForAsa(200, 180, 60, 120), 19, "NumberOfAgentsForAsa not equal")
+	assert.Equal(t, numberOfAgentsForAsa, 12, "NumberOfAgentsForAsa are equal")
+	assert.Equal(t, err, nil, "NumberOfAgentsForAsa are equal")
+	assert.NotEqual(t, numberOfAgentsForAsa, 19, "NumberOfAgentsForAsa not equal")
 
 }
