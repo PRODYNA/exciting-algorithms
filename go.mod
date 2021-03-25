@@ -1,4 +1,4 @@
-module github.com/prodyna/exciting-algorithm
+module github.com/prodyna/exciting-algorithms
 
 go 1.16
 
