@@ -1,7 +1,7 @@
 package tests
 
 import (
-	erlang "excitingalgorithm"
+	erlang2 "excitingalgorithm/erlang"
 	"github.com/stretchr/testify/assert"
 	"math"
 	"testing"
@@ -9,7 +9,7 @@ import (
 
 func TestServiceLevel(t *testing.T) {
 	// ServiceLevel
-	serviceLevel, err := erlang.ServiceLevel(25, 200, 180, 60, 60)
+	serviceLevel, err := erlang2.ServiceLevel(25, 200, 180, 60, 60)
 
 	assert.Equal(t, math.Round(serviceLevel/0.0000001)*0.0000001, 0.9999992, "ServiceLevel are equal")
 	assert.Equal(t, err, nil, "ServiceLevel are equal")
