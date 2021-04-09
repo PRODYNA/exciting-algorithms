@@ -10,11 +10,11 @@ import (
 // avgHandleTime: Average handling time in seconds
 // intervalLength: Length of an interval in minutes
 // return: Traffic intensity in Erlangs
-func Intensity(arrivalRate int, avgHandleTime int, intervalLength int) (float64, error) {
+func Intensity(arrivalRate float64, avgHandleTime int, intervalLength int) (float64, error) {
 	if intervalLength == 0 {
 		return 0, errors.New("intervalLength can't be zero")
 	} else {
-		var erlangunit float64 = (float64(arrivalRate) / (60 * float64(intervalLength))) * float64(avgHandleTime)
+		var erlangunit float64 = (arrivalRate / (60 * float64(intervalLength))) * float64(avgHandleTime)
 		return erlangunit, nil
 	}
 }
@@ -56,7 +56,7 @@ func ErlangC(numberOfAgents int, intensity float64) float64 {
 // avgHandleTime: Average handling time in seconds
 // intervalLength: Length of an interval in minutes
 // return: Average waiting time in second
-func AvgWaitTime(numberOfAgents int, arrivalRate int, avgHandleTime int, intervalLength int) (float64, error) {
+func AvgWaitTime(numberOfAgents int, arrivalRate float64, avgHandleTime int, intervalLength int) (float64, error) {
 	intensity, err := Intensity(arrivalRate, avgHandleTime, intervalLength)
 	if err == nil {
 		var awt float64 = (ErlangC(numberOfAgents, intensity) * float64(avgHandleTime)) / (float64(numberOfAgents) - intensity)
@@ -76,7 +76,7 @@ func AvgWaitTime(numberOfAgents int, arrivalRate int, avgHandleTime int, interva
 // intervalLength: Length of an interval in minutes
 // waitTime: Acceptable waiting time
 // return: Service level (% of calls answered within acceptable waiting time)
-func ServiceLevel(numberOfAgents int, arrivalRate int, avgHandleTime int, intervalLength int, waitTime int) (float64, error) {
+func ServiceLevel(numberOfAgents int, arrivalRate float64, avgHandleTime int, intervalLength int, waitTime int) (float64, error) {
 	a, err := Intensity(arrivalRate, avgHandleTime, intervalLength)
 	if err == nil {
 		if avgHandleTime != 0 {
@@ -99,7 +99,7 @@ func ServiceLevel(numberOfAgents int, arrivalRate int, avgHandleTime int, interv
 // waitTime: Acceptable waiting time (i.e. 20 seconds in a 80/20 SL goal)
 // serviceLevelGoal: Service level goal, the percentage of calls answered within the acceptable waiting time
 // return: Number of agents needed to achieve service level
-func NumberOfAgentsForSl(arrivalRate int, avgHandleTime int, intervalLength int, waitTime int, serviceLevelGoal float64) (int, error) {
+func NumberOfAgentsForSl(arrivalRate float64, avgHandleTime int, intervalLength int, waitTime int, serviceLevelGoal float64) (int, error) {
 	intensity, err := Intensity(arrivalRate, avgHandleTime, intervalLength)
 	if err == nil {
 		var agents int = int(math.Ceil(intensity))
@@ -126,12 +126,11 @@ func NumberOfAgentsForSl(arrivalRate int, avgHandleTime int, intervalLength int,
 // intervalLength: Length of an interval in minutes
 // waitTime: Waiting time goal in seconds
 // return: Number of agents needed to achieve ASA
-func NumberOfAgentsForAsa(arrivalRate int, avgHandleTime int, intervalLength int, waitTime int) (int, error) {
+func NumberOfAgentsForAsa(arrivalRate float64, avgHandleTime int, intervalLength int, waitTime int) (int, error) {
 	intensity, err := Intensity(arrivalRate, avgHandleTime, intervalLength)
 	if err == nil {
 		var agents int = int(math.Ceil(intensity))
 		avgWaitTime, err := AvgWaitTime(agents, arrivalRate, avgHandleTime, intervalLength)
-		//https://github.com/phubers/erlang/blob/master/R/functions.R
 		if err == nil {
 			for avgWaitTime > float64(waitTime) {
 				agents = agents + 1
