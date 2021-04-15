@@ -23,9 +23,9 @@ func Intensity(arrivalRate float64, avgHandleTime int, intervalLength int) (floa
 // numberOfAgents: Number of available agents
 // intensity: Traffic intensity in Erlangs
 // return: Occupancy
-func Occupancy(numberOfAgents int, intensity int) float64 {
+func Occupancy(numberOfAgents int, intensity float64) float64 {
 
-	return float64(intensity) / float64(numberOfAgents)
+	return intensity / float64(numberOfAgents)
 }
 
 // Calculate the chance of a blocked call (Erlang B function)
